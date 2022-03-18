@@ -18,6 +18,7 @@ public class Runner {
 				boolean prev = false;
 				String next = scanner.next();
 				HashMap<String, String> pairs = new HashMap<String, String>();
+				HashMap<HashMap<String, String>, Integer> reps = new HashMap<HashMap<String, String>, Integer>();
 				ArrayList<Integer> repetitions = new ArrayList<Integer>();
 				if(next.equals(".") || next.equals("!") || next.equals("?") || next.equals("-")) {
 					next = scanner.next();
@@ -26,15 +27,16 @@ public class Runner {
 				for(String i:pairs.keySet()) {
 					if(i.equals(curr) && pairs.get(i).equals(next)) {
 						prev = true;
-						
 					}
 				}
+				//start new enhanced for loop for reps
 				if(!prev) {
 					pairs.put(curr, next);
+					reps.put(pairs, 0);
 					repetitions.add(0);
 				}
 				curr = next;
-				System.out.println(pairs);
+				System.out.println(reps);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
