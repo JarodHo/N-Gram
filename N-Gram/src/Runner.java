@@ -13,31 +13,49 @@ public class Runner {
 		
 		try {
 			scanner = new Scanner(f);
-			String curr = scanner.next();
+			String curr = scanner.next().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+			HashMap<String, HashMap<String, Integer>> pairs = new HashMap<String, HashMap<String, Integer>>();
 			while(scanner.hasNext()) {
-				boolean prev = false;
-				String next = scanner.next();
-				HashMap<String, String> pairs = new HashMap<String, String>();
-				HashMap<HashMap<String, String>, Integer> reps = new HashMap<HashMap<String, String>, Integer>();
-				ArrayList<Integer> repetitions = new ArrayList<Integer>();
-				if(next.equals(".") || next.equals("!") || next.equals("?") || next.equals("-")) {
-					next = scanner.next();
-				}
-				
-				for(String i:pairs.keySet()) {
-					if(i.equals(curr) && pairs.get(i).equals(next)) {
-						prev = true;
+				String next = scanner.next().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+				if(!next.equals("") && !next.equals(" ")) {
+					if(pairs.containsKey(curr)) {
+						if(pairs.get(curr).containsKey(next)) {
+							pairs.get(curr).put(next, pairs.get(curr).get(next) +1);
+						}else {
+							pairs.get(curr).put(next, 1);
+						}
+					}else {
+						HashMap<String, Integer> temp = new HashMap<String, Integer>();
+						temp.put(next, 1);
+						pairs.put(curr, temp);
 					}
 				}
-				//start new enhanced for loop for reps
-				if(!prev) {
-					pairs.put(curr, next);
-					reps.put(pairs, 0);
-					repetitions.add(0);
-				}
+				
+				
+			
 				curr = next;
-				System.out.println(reps);
 			}
+			for(String word : pairs.keySet()) {
+				int most = 0;
+				String mostWord = "";
+				for(String word2:pairs.get(word).keySet()) {
+					if(pairs.get(word).get(word2) > most) {
+						most = pairs.get(word).get(word2);
+						mostWord = word2;
+//						System.out.println(word2 + " appears " + most + " times after " + word);
+					}
+				}	
+			}
+			int mostThe = 0;
+			String theWord = "";
+			for(String word2:pairs.get("the").keySet()) {
+				if(pairs.get("the").get(word2) > mostThe) {
+					mostThe = pairs.get("the").get(word2);
+					theWord = word2;
+				}
+			}
+			System.out.println("The most common word that appears after the word 'the' is: " + theWord + " which appears " + mostThe + " times.");
+			System.out.println("All of the words which appear after the word 'the' are : " + pairs.get("the").keySet());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
